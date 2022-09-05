@@ -8,50 +8,46 @@ before sending to the api
 */
 
 function App() {
-  const [textAreaData, setTextAreaData] = useState("");
-  const [file, setFile] = useState(null);
+  const [formObject, setFormObject] = useState({
+    file: null,
+    textArea: "",
+  });
 
   const handleFileUpload = (e) => {
-    setFile(e.target.files[0]);
+    setFormObject({
+      [e.target.name]: e.target.files[0],
+      ...formObject,
+    });
   };
   const handleTextArea = (e) => {
-    console.log(e.target.value);
-    setTextAreaData(e.target.value);
-    const arrayData = textAreaData.split(/\n/);
+    const arrayData = e.target.value.split(/\n/);
+
     console.log(arrayData);
+    setFormObject({ ...formObject, [e.target.name]: arrayData });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (file !== null) {
-      const formData = new FormData();
-      formData.append("file", file);
-      axios
-        .post("http://localhost:9000/price/difference", formData)
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
-    }
-    if (file === null && textAreaData.length > 0) {
-      axios
-        .post("http://localhost:9000/price/difference", textAreaData)
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
-    }
+    console.log(formObject);
+    axios
+      .post("http://localhost:9000/price/difference", formObject)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
   };
   return (
     <div className="App">
       <form onSubmit={handleSubmit}>
         <label>
           Upload your data
-          <input type="file" onChange={handleFileUpload} />
+          <input name="file" type="file" onChange={handleFileUpload} />
         </label>
-        <label id="textarea">
+        <label id="textArea">
           Add your data below
           <textarea
-            id="textarea"
-            name="data"
+            id="textArea"
+            name="textArea"
             onChange={handleTextArea}
-            value={textAreaData}
+            value={formObject.textArea}
           ></textarea>
         </label>
         <button>Submit</button>
