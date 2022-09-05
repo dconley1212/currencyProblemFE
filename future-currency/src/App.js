@@ -1,5 +1,6 @@
 import "./App.css";
 import React, { useState } from "react";
+import axios from "axios";
 
 /* left off testing how the data might look when a user adds it
 so that I can make a mock test of how I want to format the data
@@ -25,12 +26,21 @@ function App() {
     if (file !== null) {
       const formData = new FormData();
       formData.append("file", file);
-    } else {
+      axios
+        .post("http://localhost:9000/price/difference", formData)
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
+    }
+    if (file === null && textAreaData.length > 0) {
+      axios
+        .post("http://localhost:9000/price/difference", textAreaData)
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
     }
   };
   return (
     <div className="App">
-      <form>
+      <form onSubmit={handleSubmit}>
         <label>
           Upload your data
           <input type="file" onChange={handleFileUpload} />
