@@ -20,3 +20,5 @@ test("form, file input, text area, and submit button are in the DOM", () => {
   expect(textArea).toBeInTheDocument();
   expect(button).toBeInTheDocument();
 });
+
+test("tests textarea function that splits data string into and array", () => {});
