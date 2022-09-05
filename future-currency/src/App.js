@@ -36,7 +36,7 @@ function App() {
   };
   return (
     <div className="App">
-      <form onSubmit={handleSubmit}>
+      <form aria-label="currency info" onSubmit={handleSubmit}>
         <label>
           Upload your data
           <input name="file" type="file" onChange={handleFileUpload} />
