@@ -7,21 +7,42 @@ before sending to the api
 */
 
 function App() {
-  const [textAreaData, setTextAreaData] = useState([]);
+  const [textAreaData, setTextAreaData] = useState("");
+  const [file, setFile] = useState(null);
+
+  const handleFileUpload = (e) => {
+    setFile(e.target.files[0]);
+  };
   const handleTextArea = (e) => {
+    console.log(e.target.value);
     setTextAreaData(e.target.value);
-    console.log(textAreaData);
+    const arrayData = textAreaData.split(/\n/);
+    console.log(arrayData);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (file !== null) {
+      const formData = new FormData();
+      formData.append("file", file);
+    } else {
+    }
   };
   return (
     <div className="App">
       <form>
         <label>
           Upload your data
-          <input type="file" />
+          <input type="file" onChange={handleFileUpload} />
         </label>
-        <label>
+        <label id="textarea">
           Add your data below
-          <textarea onChange={handleTextArea} value={textAreaData}></textarea>
+          <textarea
+            id="textarea"
+            name="data"
+            onChange={handleTextArea}
+            value={textAreaData}
+          ></textarea>
         </label>
         <button>Submit</button>
       </form>
