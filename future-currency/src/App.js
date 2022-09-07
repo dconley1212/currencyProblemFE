@@ -13,9 +13,20 @@ function App() {
     textArea: "",
   });
 
+  let fileInForm = new FormData();
+
   const handleFileUpload = (e) => {
+    const file = e.target.file[0];
+    fileInForm.append("file", file);
+    // const reader = new FileReader();
+    // reader.onload = function (e) {
+    //   console.log(e.target.result);
+    // };
+    // const fileAsText = reader.readAsText(file);
+    // console.log(fileAsText);
+
     setFormObject({
-      [e.target.name]: e.target.files[0],
+      [e.target.name]: fileInForm,
       ...formObject,
     });
   };
@@ -52,6 +63,7 @@ function App() {
         </label>
         <button>Submit</button>
       </form>
+      {}
     </div>
   );
 }
