@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import App,  from "../App";
+import App from "../App";
 
 /* I added a few tests for what I was trying to accomplish but
 ultimately found that TDD was harder than I imagined because I would
