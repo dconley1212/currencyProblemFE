@@ -8,15 +8,14 @@ before sending to the api
 */
 
 function App() {
-  const [formObject, setFormObject] = useState({
-    file: null,
+  const [textAreaObject, setTextAreaObject] = useState({
     textArea: "",
   });
 
   let fileInForm = new FormData();
 
   const handleFileUpload = (e) => {
-    const file = e.target.file[0];
+    const file = e.target.files[0];
     fileInForm.append("file", file);
     // const reader = new FileReader();
     // reader.onload = function (e) {
@@ -24,26 +23,28 @@ function App() {
     // };
     // const fileAsText = reader.readAsText(file);
     // console.log(fileAsText);
-
-    setFormObject({
-      [e.target.name]: fileInForm,
-      ...formObject,
-    });
+    // console.log(formObject.file);
   };
   const handleTextArea = (e) => {
     const arrayData = e.target.value.split(/\n/);
 
     console.log(arrayData);
-    setFormObject({ ...formObject, [e.target.name]: arrayData });
+    setTextAreaObject({ [e.target.name]: arrayData });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formObject);
-    axios
-      .post("http://localhost:9000/price/difference", formObject)
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+    if (textAreaObject.textArea.length === 0) {
+      axios
+        .post("http://localhost:9000/price/difference", fileInForm)
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
+    } else {
+      axios
+        .post("http://localhost:9000/price/difference", textAreaObject)
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
+    }
   };
   return (
     <div className="App">
@@ -58,7 +59,7 @@ function App() {
             id="textArea"
             name="textArea"
             onChange={handleTextArea}
-            value={formObject.textArea}
+            value={textAreaObject.textArea}
           ></textarea>
         </label>
         <button>Submit</button>
