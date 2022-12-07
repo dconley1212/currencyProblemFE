@@ -78,10 +78,14 @@ trying to use a text file. It could have been necessary to use a .csv
   const handleSubmit = (e) => {
     e.preventDefault();
     let fileInForm = new FormData();
-    fileInForm.append("file", file);
+    fileInForm.append("uploaded_file", file);
     if (file !== null) {
       axios
-        .post("http://localhost:9000/file", fileInForm)
+        .post("http://localhost:9000/file", fileInForm, {
+          headers: {
+            "content-type": "multipart/form-data",
+          },
+        })
         .then((res) => {
           console.log(res);
           setMaxProfit(res.data);
@@ -89,7 +93,11 @@ trying to use a text file. It could have been necessary to use a .csv
         .catch((err) => console.log(err));
     } else {
       axios
-        .post("http://localhost:9000/textArea", textAreaObject)
+        .post("http://localhost:9000/textArea", textAreaObject, {
+          headers: {
+            "content-type": "multipart/form-data",
+          },
+        })
         .then((res) => {
           console.log(res);
           setMaxProfit(res.data);
@@ -101,7 +109,6 @@ trying to use a text file. It could have been necessary to use a .csv
     <StyledAppWrapper className="App">
       <h1>Finding Max Profit!</h1>
       <StyledForm
-        encType="multipart/form-data"
         aria-label="currency info"
         onSubmit={handleSubmit}
         data-testid="form"
